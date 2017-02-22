@@ -3,8 +3,8 @@
 # A quick hack to create some certs for use in a test vault setup.
 
 set -e
-
-DIR=$(dirname $0)/../ssl/tmp
+cd $(dirname $0)/..
+export RUNDIR=$(pwd)/runtime/ssl
 
 # Are we installed?
 type certstrap > /dev/null 2>&1
@@ -13,15 +13,13 @@ if [ "$?" -ne 0 ]; then
     exit 1
 fi
 
-if [ -d "$DIR" ]; then
-    echo "CA dir eists? rm and try again... ($DIR)"
+if [ -d "$RUNDIR" ]; then
+    echo "CA dir eists? rm and try again... (rm -rf $RUNDIR)"
     exit 1
 fi
 
-CERT_INFO="-c US --st MA -l 'Boston' -o 'Snakes for Vault'"
-
 # Make the CA
-certstrap --depot-path "$DIR" \
+certstrap --depot-path "$RUNDIR" \
 	  init \
 	  --passphrase '' \
 	  -c US --st MA -l 'Boston' -o 'Snakes for Vault' \
@@ -30,12 +28,12 @@ certstrap --depot-path "$DIR" \
 
 # Make certs
 for cert in localhost test1 test2 test3; do
-    certstrap --depot-path "$DIR" \
+    certstrap --depot-path "$RUNDIR" \
 	      request-cert \
 	      --passphrase '' \
 	      -c US --st MA -l 'Boston' -o 'Snakes for Vault' \
 	      --ou $cert \
 	      --cn $cert
-    certstrap --depot-path "$DIR" sign -CA ca $cert
+    certstrap --depot-path "$RUNDIR" sign -CA ca $cert
 done
 	      
