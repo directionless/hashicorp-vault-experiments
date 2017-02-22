@@ -17,3 +17,13 @@ start again :)
 rm -rf runtime/vault-storage   # No resumption for now
 ./tools/vault-init.sh          # Start a vault
 ```
+
+# Policy Mangement
+
+## Terraform
+
+```
+cd terraform
+terraform plan
+terraform apply
+```
