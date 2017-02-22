@@ -16,18 +16,19 @@ vault server -config=../vault-config.hcl &
 vault_pid=$!
 
 export VAULT_ADDR='https://localhost:8243'
+export VAULT_CACERT="$RUNDIR/ssl/ca.crt"
 
 # create a vault. And unseal it
-vault init -ca-cert ssl/ca.crt -key-threshold 1 -key-shares 1 | tee $RUNDIR/vault-init.txt
-vault unseal -ca-cert ssl/ca.crt $(hcv_unseal)
+vault init -key-threshold 1 -key-shares 1 | tee $RUNDIR/vault-init.txt
+vault unseal $(hcv_unseal)
 
 # login
-vault auth -ca-cert ssl/ca.crt $(hcv_root)
+vault auth $(hcv_root)
 
 # Setup TLS auth.
 # Anything signed by the CA, will get the default policies
-vault auth-enable -ca-cert ssl/ca.crt  cert
-vault write -ca-cert ssl/ca.crt auth/cert/certs/snake-ca \
+vault auth-enable  cert
+vault write auth/cert/certs/snake-ca \
       display_name=snake-ca \
       policies=default \
       certificate=@ssl/ca.crt \
@@ -44,8 +45,8 @@ cat <<EOF
 
 You now have a working vault running
 
-VAULT_ADDR=$VAULT_ADDR
--ca-cert ssl/ca.crt
+export VAULT_ADDR='https://localhost:8243'
+export VAULT_CACERT="$RUNDIR/ssl/ca.crt"
 Your root token is $(hcv_root)
 
 hit return when you're ready to exit
