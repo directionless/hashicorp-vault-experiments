@@ -65,6 +65,9 @@ def diff_file(file):
 def upload_file(file):
     pass
 
+
+
+
 logging.basicConfig(level=logging.DEBUG)
 logging.getLogger('requests').setLevel(logging.WARNING)
 
@@ -89,7 +92,8 @@ with requests.Session() as s:
                 logging.warn("Unknown file in vault! {0}".format(unknown_path))
 
     # Okay, now let's handle the files
-    
+    for f in files:
+        pass
             
         
     
