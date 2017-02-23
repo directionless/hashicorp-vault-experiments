@@ -43,11 +43,12 @@ cat <<EOF
 
 
 
-You now have a working vault running
+You now have a working vault running.
+Here's a blob of env using the root token
 
 export VAULT_ADDR='https://localhost:8243'
 export VAULT_CACERT="$RUNDIR/ssl/ca.crt"
-Your root token is $(hcv_root)
+export VAULT_TOKEN=$(hcv_root)
 
 hit return when you're ready to exit
 EOF

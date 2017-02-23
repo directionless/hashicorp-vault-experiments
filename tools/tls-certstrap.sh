@@ -33,7 +33,9 @@ for cert in localhost test1 test2 test3; do
 	      --passphrase '' \
 	      -c US --st MA -l 'Boston' -o 'Snakes for Vault' \
 	      --ou $cert \
-	      --cn $cert
+	      --cn $cert \
+	      --domain $cert
+    
     certstrap --depot-path "$RUNDIR" sign -CA ca $cert
 done
 	      
