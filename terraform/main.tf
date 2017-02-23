@@ -12,7 +12,7 @@ resource "vault_generic_secret" "example" {
 EOT
 }
 
-resource "vault_policy" "example" {
+resource "vault_policy" "dev-team1" {
   name = "dev-team"
 
   policy = <<EOT
@@ -20,4 +20,13 @@ path "secret/my_app" {
   policy = "write"
 }
 EOT
+}
+
+resource "vault_generic_secret" "dev-team2" {
+  path = "sys/policy/dev-team2"
+  data_json = <<EOT
+  {
+    "rules": "path \"postgresql/creds/readonly\" {\n  capabilities = [\"read\"]\n}"
+  }
+  EOT
 }

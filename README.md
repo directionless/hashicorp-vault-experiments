@@ -18,12 +18,50 @@ rm -rf runtime/vault-storage   # No resumption for now
 ./tools/vault-init.sh          # Start a vault
 ```
 
-# Policy Mangement
+# Policy Management
+
+There are _at least_ two different ways to configure vault. One of
+them is the nascent terraform
+[vault provider](https://www.terraform.io/docs/providers/vault/index.html). There
+is also an api based
+[blog post](https://www.hashicorp.com/blog/codifying-vault-policies-and-configuration.html),
+and associated
+[repo](https://github.com/hashicorp/vault-provision-example).
+
+
 
 ## Terraform
+
+Note that in a terraform policy `policy` and `capabilities` are
+similar. `policy` is a legacy shorthand for specifying a set of
+`capabilities`.
+
+Terraform seems unable to handle anything created outside it's state
+file. This has pros and cons. The big pro, is that it means it won't
+delete secrets it did not create. (yay!). The big con, is that is
+cannot remove or highlite configuration that was created outside
+itself.
+
+That con, coupled with it's baroque syntax, feels like a frustrating
+deficiency.
 
 ```
 cd terraform
 terraform plan
 terraform apply
 ```
+
+## API Driven Configs
+
+```
+cd api-configurator
+```
+
+## Comparison
+
+Terraform's big win, is that it's a tool to standardize on for
+declarative configuration. But, it requires you carry the state, and
+it does not support anything other than policy.
+
+| Feature | Terraform | API |
+| ------- | --------- | --- |
