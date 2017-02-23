@@ -42,8 +42,8 @@ delete secrets it did not create. (yay!). The big con, is that is
 cannot remove or highlite configuration that was created outside
 itself.
 
-That con, coupled with it's baroque syntax, feels like a frustrating
-deficiency.
+The syntax inside terraform is cumbersome. Objects are represented via
+string encoded json or hcl. 
 
 ```
 cd terraform
@@ -53,15 +53,3 @@ terraform apply
 
 ## API Driven Configs
 
-```
-cd api-configurator
-```
-
-## Comparison
-
-Terraform's big win, is that it's a tool to standardize on for
-declarative configuration. But, it requires you carry the state, and
-it does not support anything other than policy.
-
-| Feature | Terraform | API |
-| ------- | --------- | --- |
